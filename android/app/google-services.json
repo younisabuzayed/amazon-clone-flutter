@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "737109940668",
+    "project_id": "clone-eda6a",
+    "storage_bucket": "clone-eda6a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:737109940668:android:58ac0bdfcce35e21beb3b9",
+        "android_client_info": {
+          "package_name": "com.example.amazon_clone"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "737109940668-522c5aul99b8ai92bnaqhe0oldd4nh84.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBUy4XJKtQjNK65uJdF1TkQRVKWols1K9U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "737109940668-522c5aul99b8ai92bnaqhe0oldd4nh84.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "737109940668-ufv28gfc0e9lg27pbbfif14oh6gofgkk.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.amazonClone"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

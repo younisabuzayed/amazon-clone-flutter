@@ -1,4 +1,4 @@
-import 'package:amazon_clone/data/apis/account_api.dart';
+import 'package:amazon_clone/screens/account/api/account_api.dart';
 import 'package:amazon_clone/screens/account/widgets/account_button.dart';
 import 'package:flutter/material.dart';
 

@@ -1,5 +1,5 @@
 import 'package:amazon_clone/constants/global_variables.dart';
-import 'package:amazon_clone/data/apis/admin_api.dart';
+import 'package:amazon_clone/screens/admin/api/admin_api.dart';
 import 'package:amazon_clone/models/order.dart';
 import 'package:amazon_clone/provider/user_provider.dart';
 import 'package:amazon_clone/screens/home/widget/header.dart';

@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:amazon_clone/constants/global_variables.dart';
 import 'package:amazon_clone/constants/utils/pick_images.dart';
-import 'package:amazon_clone/data/apis/admin_api.dart';
+import 'package:amazon_clone/screens/admin/api/admin_api.dart';
 import 'package:amazon_clone/widgets/custom_button.dart';
 import 'package:amazon_clone/widgets/custom_textfield.dart';
 import 'package:carousel_slider/carousel_slider.dart';

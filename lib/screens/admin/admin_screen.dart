@@ -1,7 +1,9 @@
 import 'package:amazon_clone/constants/global_variables.dart';
+import 'package:amazon_clone/screens/account/api/account_api.dart';
 import 'package:amazon_clone/screens/admin/screens/analytics_screen.dart';
 import 'package:amazon_clone/screens/admin/screens/orders_screen.dart';
 import 'package:amazon_clone/screens/admin/screens/posts_screen.dart';
+import 'package:amazon_clone/widgets/custom_button.dart';
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 
@@ -17,7 +19,7 @@ class _AdminState extends State<Admin> {
   int _page = 0;
   double bottomBarWidth = 42; 
   double bottomBarBorderWidth = 5; 
-
+  AccountAPI _accountAPI = AccountAPI();
   List<Widget> pages = [
     Posts(),
     Analytics(),
@@ -28,6 +30,10 @@ class _AdminState extends State<Admin> {
     setState(() {
       _page = page;
     });
+  }
+  void _logOutNavigator()
+  {
+    _accountAPI.logOut(context);
   }
   @override
   Widget build(BuildContext context) {
@@ -52,12 +58,27 @@ class _AdminState extends State<Admin> {
                   color: Colors.black,
                 ),
               ),
-              const Text(
-                'Admin',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                ),
+              Row(
+                children: [
+                  const Text(
+                    'Admin',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: _logOutNavigator,
+                    child: const Text(
+                      'Logout',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 12,
+                      ),
+                      textAlign: TextAlign.end,
+                    ),
+                  ),
+                ],
               )
             ]
           ),

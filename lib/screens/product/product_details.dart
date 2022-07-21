@@ -1,6 +1,6 @@
 import 'package:amazon_clone/constants/global_variables.dart';
-import 'package:amazon_clone/data/apis/auth_api.dart';
-import 'package:amazon_clone/data/apis/product_details_api.dart';
+import 'package:amazon_clone/screens/auth/api/auth_api.dart';
+import 'package:amazon_clone/screens/product/product_details_api.dart';
 import 'package:amazon_clone/models/product.dart';
 import 'package:amazon_clone/provider/user_provider.dart';
 import 'package:amazon_clone/screens/home/widget/header.dart';

@@ -1,6 +1,6 @@
 import 'package:amazon_clone/constants/global_variables.dart';
 import 'package:amazon_clone/constants/utils/shown_snack_bar.dart';
-import 'package:amazon_clone/data/apis/address_api.dart';
+import 'package:amazon_clone/screens/address/api/address_api.dart';
 import 'package:amazon_clone/models/user.dart';
 import 'package:amazon_clone/provider/user_provider.dart';
 import 'package:amazon_clone/widgets/custom_textfield.dart';

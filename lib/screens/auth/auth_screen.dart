@@ -2,7 +2,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
 import 'package:amazon_clone/constants/global_variables.dart';
-import 'package:amazon_clone/data/apis/auth_api.dart';
+import 'package:amazon_clone/screens/auth/api/auth_api.dart';
 import 'package:amazon_clone/widgets/custom_button.dart';
 import 'package:amazon_clone/widgets/custom_textField.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +26,9 @@ class _AuthState extends State<Auth> {
   final _signInFromKey = GlobalKey<FormState>();
   final AuthAPI authAPI = AuthAPI();
 
+  bool showPasswordCreate = true;
+  bool showPasswordSignIn = true;
+
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
@@ -38,20 +41,26 @@ class _AuthState extends State<Auth> {
     _nameController.dispose();
   }
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
   void SignUpUser() {
     authAPI.SignUpUser(
         context: context,
         email: _emailController.text,
         password: _passwordController.text,
-        name: _nameController.text
-      );
+        name: _nameController.text);
   }
+
   void SignInUser() {
     authAPI.SignInUser(
-        context: context,
-        email: _emailController.text,
-        password: _passwordController.text,
-      );
+      context: context,
+      email: _emailController.text,
+      password: _passwordController.text,
+    );
   }
 
   @override
@@ -72,7 +81,7 @@ class _AuthState extends State<Auth> {
                 'Welcome',
                 style: TextStyle(
                   fontSize: 22,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),
@@ -88,10 +97,12 @@ class _AuthState extends State<Auth> {
                 topLeft: Radius.circular(8),
                 topRight: Radius.circular(8),
               )),
-              title: const Text(
+              title: Text(
                 'Create Account',
                 style: TextStyle(
-                  fontWeight: FontWeight.bold,
+                  fontWeight: _auth == AuthEnum.signup
+                      ? FontWeight.w700
+                      : FontWeight.w500,
                 ),
               ),
               leading: Radio(
@@ -129,6 +140,20 @@ class _AuthState extends State<Auth> {
                       CustomTextField(
                         controller: _passwordController,
                         label: 'Password',
+                        obscureText: showPasswordCreate,
+                        suffixIcon: IconButton(
+                          visualDensity: VisualDensity.comfortable,
+                          icon: Icon(!showPasswordCreate
+                              ? Icons.remove_red_eye_outlined
+                              : Icons.remove_red_eye),
+                          onPressed: (){
+                            showPasswordCreate = !showPasswordCreate;
+                            setState(() {
+                              
+                            });
+                          }
+                              
+                        ),
                       ),
                       SizedBox(height: 10),
                       CustomButton(
@@ -144,10 +169,12 @@ class _AuthState extends State<Auth> {
                 ),
               ),
             ListTile(
-              title: const Text(
+              title: Text(
                 'Sign-In',
                 style: TextStyle(
-                  fontWeight: FontWeight.bold,
+                  fontWeight: _auth == AuthEnum.signin
+                      ? FontWeight.w700
+                      : FontWeight.w500,
                 ),
               ),
               tileColor: _auth == AuthEnum.signin
@@ -189,6 +216,18 @@ class _AuthState extends State<Auth> {
                       CustomTextField(
                         controller: _passwordController,
                         label: 'Password',
+                        obscureText: showPasswordSignIn,
+                        suffixIcon: IconButton(
+                          visualDensity: VisualDensity.comfortable,
+                          icon: Icon(!showPasswordSignIn
+                              ? Icons.remove_red_eye_outlined
+                              : Icons.remove_red_eye),
+                          onPressed: () {
+                            showPasswordSignIn = !showPasswordSignIn;
+                            setState(() {
+                            });
+                          },
+                        ),
                       ),
                       SizedBox(height: 10),
                       CustomButton(

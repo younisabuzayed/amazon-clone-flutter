@@ -1,9 +1,32 @@
 const express = require('express');
+const { adminFirebase } = require('../firebase-config');
 const admin = require('../middlewares/admin');
 const Order = require('../models/order');
 const { Product } = require('../models/product');
 
 const adminRouter = express.Router();
+const notification_options = {
+    priority: "high",
+    timeToLive: 60 * 60 * 24
+};
+
+async function fetchCategoryWiseProduct(category)
+{
+    let earnings = 0.0;
+    let categoryOrders = await Order.find({
+        'products.product.category': category,
+    });
+    for (let i = 0; i < categoryOrders.length; i++)
+    {
+        for (let j = 0; j < categoryOrders[i].products.length; j++)
+        {
+            earnings += categoryOrders[i].products[j].quantity * categoryOrders[i].products[j].product.price;
+        }
+    }
+
+    return ~~ earnings;
+};
+
 
 //Add Proudct
 adminRouter.post('/add-product', admin, async (req, res) => {
@@ -142,20 +165,60 @@ adminRouter.get('/analytics', admin, async (req, res) =>
     }
 });
 
-async function fetchCategoryWiseProduct(category)
-{
-    let earnings = 0.0;
-    let categoryOrders = await Order.find({
-        'products.product.category': category,
-    });
-    for (let i = 0; i < categoryOrders.length; i++)
-    {
-        for (let j = 0; j < categoryOrders[i].products.length; j++)
-        {
-            earnings += categoryOrders[i].products[j].quantity * categoryOrders[i].products[j].product.price;
-        }
-    }
 
-    return ~~ earnings;
-}
+adminRouter.post('/notification', async (req, res)=>{
+    const {
+        token: registrationToken,
+        message,
+    } = req.body
+    const options =  notification_options
+    
+    try {
+        const notification = await adminFirebase.messaging().sendToDevice(
+            registrationToken, 
+            {
+                notification:
+                {
+                    title:'test',
+                    body: "test"
+                }
+            }, 
+            options
+        );
+        notification.status(200).json(response);
+        notification.status(200).send("Notification sent successfully")
+    
+    } catch (error) {
+        res
+        .status(500)
+        .json({
+            message: error.message,
+        })
+    }
+    // adminFirebase.messaging().sendToDevice(
+    // registrationToken, 
+    // {
+    //     notification:
+    //     {
+    //         title:'test',
+    //         body: "test"
+    //     }
+    // }, 
+    // options
+    // )
+    // .then( response => {
+    // res.status(200).json(response);
+    // res.status(200).send("Notification sent successfully")
+    
+    // })
+    // .catch( error => {
+    // res
+    // .status(500)
+    // .json({
+    //     message: error.message,
+    // })
+    // });
+
+});
+
 module.exports = adminRouter;

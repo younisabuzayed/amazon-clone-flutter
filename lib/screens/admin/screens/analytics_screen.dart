@@ -1,4 +1,4 @@
-import 'package:amazon_clone/data/apis/admin_api.dart';
+import 'package:amazon_clone/screens/admin/api/admin_api.dart';
 import 'package:amazon_clone/models/admin/sales.dart';
 import 'package:amazon_clone/screens/admin/widget/category_product_chart.dart';
 import 'package:amazon_clone/widgets/loader.dart';
