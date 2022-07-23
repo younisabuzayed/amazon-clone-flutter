@@ -40,6 +40,7 @@ class _SearchedProductState extends State<SearchedProduct> {
   }
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
     return GestureDetector(
       onTap:_navigateToProductDetail,
       child: Column(
@@ -50,76 +51,82 @@ class _SearchedProductState extends State<SearchedProduct> {
             ),
             child: Row(
               children: [
-                Image.network(
-                  widget.product.images[0],
-                  fit: BoxFit.contain,
-                  width: 135,
-                  height: 135,
+                SizedBox(
+                  width: mediaQuery.size.width * 0.3,
+                  child: Image.network(
+                    widget.product.images[0],
+                    fit: BoxFit.contain,
+                    width: double.infinity,
+                    height: 135,
+                  ),
                 ),
-                Column(
-                  children: [
-                    Container(
-                      width: 235,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 10,
-                      ),
-                      child: Text(
-                        widget.product.name,
-                        style: const TextStyle(
-                          fontSize: 16,
+                SizedBox(
+                  width: mediaQuery.size.width * 0.64,
+                  child: Column(
+                    children: [
+                      Container(
+                        width: 235,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10,
                         ),
-                        maxLines: 2,
-                      ),
-                    ),
-                    Container(
-                      width: 235,
-                      padding: const EdgeInsets.only(
-                        left: 10,
-                        top: 5,
-                      ),
-                      child: Stars(rating: avgRating)
-                    ),
-                    Container(
-                      width: 235,
-                      padding: const EdgeInsets.only(
-                        left: 10,
-                        top: 5,
-                      ),
-                      child: Text(
-                        '\$${widget.product.price}',
-                        style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
+                        child: Text(
+                          widget.product.name,
+                          style: const TextStyle(
+                            fontSize: 16,
+                          ),
+                          maxLines: 2,
                         ),
-                        maxLines: 2,
                       ),
-                    ),
-                    Container(
-                      width: 235,
-                      padding: const EdgeInsets.only(
-                        left: 10,
-                      ),
-                      child: const Text(
-                        'Eligible for FREE Shipping',
-                        style: TextStyle(
+                      Container(
+                        width: 235,
+                        padding: const EdgeInsets.only(
+                          left: 10,
+                          top: 5,
                         ),
-                        maxLines: 2,
+                        child: Stars(rating: avgRating)
                       ),
-                    ),
-                    Container(
-                      width: 235,
-                      padding: const EdgeInsets.only(
-                        left: 10,
-                      ),
-                      child: const Text(
-                        'In Stock',
-                        style: TextStyle(
-                          color: Colors.teal
+                      Container(
+                        width: 235,
+                        padding: const EdgeInsets.only(
+                          left: 10,
+                          top: 5,
                         ),
-                        maxLines: 2,
+                        child: Text(
+                          '\$${widget.product.price}',
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          maxLines: 2,
+                        ),
                       ),
-                    ),
-                  ],
+                      Container(
+                        width: 235,
+                        padding: const EdgeInsets.only(
+                          left: 10,
+                        ),
+                        child: const Text(
+                          'Eligible for FREE Shipping',
+                          style: TextStyle(
+                          ),
+                          maxLines: 2,
+                        ),
+                      ),
+                      Container(
+                        width: 235,
+                        padding: const EdgeInsets.only(
+                          left: 10,
+                        ),
+                        child: const Text(
+                          'In Stock',
+                          style: TextStyle(
+                            color: Colors.teal
+                          ),
+                          maxLines: 2,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),

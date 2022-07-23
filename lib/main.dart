@@ -56,8 +56,7 @@ void main() async {
       print('Message also contained a notification: ${message.notification}');
     }
   });
-  final token = await FirebaseMessaging.instance.getToken();
-  print(token);
+  // final token = await FirebaseMessaging.instance.getToken();
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (context) => UserProvider()),
   ], child: const MyApp()));
@@ -81,19 +80,19 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Amazon',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         fontFamily: "Raleway",
-          scaffoldBackgroundColor: GlobalVariables.backgroundColor,
-          colorScheme: const ColorScheme.light(
-            primary: GlobalVariables.secondaryColor,
-          ),
-          appBarTheme: const AppBarTheme(
-              elevation: 0,
-              iconTheme: IconThemeData(
-                color: Colors.black,
-              ))),
+        scaffoldBackgroundColor: GlobalVariables.backgroundColor,
+        colorScheme: const ColorScheme.light(
+          primary: GlobalVariables.secondaryColor,
+        ),
+        appBarTheme: const AppBarTheme(
+            elevation: 0,
+            iconTheme: IconThemeData(
+              color: Colors.black,
+            ))),
       onGenerateRoute: (settings) => generateRoute(settings),
       home: Provider.of<UserProvider>(context).user.token.isNotEmpty
           ? Provider.of<UserProvider>(context).user.type == 'user'

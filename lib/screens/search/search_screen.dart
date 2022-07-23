@@ -47,7 +47,7 @@ class _SearchState extends State<Search> {
               gradient: GlobalVariables.appBarGradient,
             ),
           ),
-          title: Header(),
+          title: Header(searchValue: widget.searchQuery),
         ),
       ),
       body: products == null
@@ -65,7 +65,7 @@ class _SearchState extends State<Search> {
                         itemCount: products!.length,
                         itemBuilder: (context, index) {
                           return Container(
-                            margin: const EdgeInsets.symmetric( vertical: 5),
+                            margin: const EdgeInsets.symmetric(vertical: 5),
                             child: SearchedProduct(
                               product: products![index],
                             ),
