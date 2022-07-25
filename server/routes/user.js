@@ -1,5 +1,6 @@
 const express = require('express');
 const auth = require('../middlewares/auth');
+const Notifications = require('../models/notifications');
 const Order = require('../models/order');
 const { Product } = require('../models/product');
 const User = require('../models/user');
@@ -143,6 +144,20 @@ userRouter.get('/orders/me', auth, async (req, res) => {
     res.json(orders);
     
   } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+// Notification
+userRouter.get('/notifications', auth, async(req, res) => {
+  try {
+    const notifications = await Notifications.find({
+      receiver: req.body.receiver,
+    });
+    res.status(200).json(notifications);
+  } 
+  catch (error) 
+  {
     res.status(500).json({ error: e.message });
   }
 });

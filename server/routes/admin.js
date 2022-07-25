@@ -1,8 +1,10 @@
 const express = require('express');
 const { adminFirebase } = require('../firebase-config');
 const admin = require('../middlewares/admin');
+const Notifications = require('../models/notifications');
 const Order = require('../models/order');
 const { Product } = require('../models/product');
+const User = require('../models/user');
 
 const adminRouter = express.Router();
 const notification_options = {
@@ -165,28 +167,95 @@ adminRouter.get('/analytics', admin, async (req, res) =>
     }
 });
 
+// Notifications
+adminRouter.post('/multi-user-notification', async (req, res)=>{
+    const { 
+        sender,
+        title,
+        description,
+    } = req.body;
 
-adminRouter.post('/notification', async (req, res)=>{
-    const {
-        token: registrationToken,
-        message,
-    } = req.body
-    const options =  notification_options
+    let users = await User.find();
+
+    let registrationTokens =[];
+    let receivers = [];
+    const detailsMessage ={
+        title,
+        body: description,
+    }
+    for( let i = 0; i < users.length; i++)
+    {
+        registrationTokens.push(users[i].registrationTokens);
+        receivers.push(users[i]._id);
+    }
     
     try {
-        const notification = await adminFirebase.messaging().sendToDevice(
-            registrationToken, 
+
+        let notifications = await new Notifications({
+            sender,
+            receiver: receivers,
+            title,
+            description,
+        });
+        await adminFirebase.messaging().sendMulticast({
+            tokens:registrationTokens, 
+            data: detailsMessage,
+            notification: detailsMessage, 
+            android:
             {
-                notification:
+                priority:'high'
+            }
+        });
+        notifications = await notifications.save();
+        res.status(200).json(notifications);
+        // notification.status(200).json(response);
+        // notification.status(200).send("Notification sent successfully");
+    
+    } catch (error) {
+        res
+        .status(500)
+        .json({
+            message: error.message,
+        });
+    }
+});
+firebaseRouter.post('/single-user-notification',async(req, res)=>{
+    const { 
+        sender,
+        receiver,
+        title,
+        description,
+        registrationToken,
+    } = req.body;
+
+    const detailsMessage ={
+        title,
+        body: description,
+    }
+    let receive = [];
+    receive.push(receiver);
+    try {
+        await adminFirebase.messaging().send(
+            {
+                token: registrationToken,
+                notification: detailsMessage,
+                data: detailsMessage,
+                android:
                 {
-                    title:'test',
-                    body: "test"
-                }
-            }, 
-            options
+                    priority:'high'
+                },
+                
+            }
         );
-        notification.status(200).json(response);
-        notification.status(200).send("Notification sent successfully")
+        let notifications = await new Notifications({
+            sender,
+            receiver: receive,
+            title,
+            description,
+        });
+
+        notifications = await notifications.save();
+        res.status(200).json(notifications);
     
     } catch (error) {
         res
@@ -195,30 +264,38 @@ adminRouter.post('/notification', async (req, res)=>{
             message: error.message,
         })
     }
-    // adminFirebase.messaging().sendToDevice(
-    // registrationToken, 
-    // {
-    //     notification:
-    //     {
-    //         title:'test',
-    //         body: "test"
-    //     }
-    // }, 
-    // options
-    // )
-    // .then( response => {
-    // res.status(200).json(response);
-    // res.status(200).send("Notification sent successfully")
-    
-    // })
-    // .catch( error => {
-    // res
-    // .status(500)
-    // .json({
-    //     message: error.message,
-    // })
-    // });
 
 });
 
+/*
+adminRouter.post('/notifications', admin, async (req, res) =>
+{
+    try 
+    {
+        const { 
+            sender,
+            receiver,
+            title,
+            description,
+        } = req.body;
+        let notifications = await new Notifications({
+            sender,
+            receiver,
+            title,
+            description,
+        });
+
+        notifications = await notifications.save();
+        res.status(200).json(notifications);
+    } 
+    catch (error) 
+    {
+        res
+        .status(500)
+        .json({
+            message: error.message,
+        });
+    }
+});
+*/
 module.exports = adminRouter;

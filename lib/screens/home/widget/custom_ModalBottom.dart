@@ -1,24 +1,14 @@
 import 'package:amazon_clone/screens/search/search_screen.dart';
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 
 class CustomModalBottom extends StatefulWidget {
-  // final SpeechToText speechToText;
-  // final VoidCallback startListening;
-  // final VoidCallback stopListening;
-  // final bool isListening;
-  // final String result;
-  // final bool speechEnabled;
+  VoidCallback onSccussMove;
   CustomModalBottom({
     Key? key,
-    // required this.startListening,
-    // required this.stopListening,
-    // required this.isListening,
-    // required this.speechEnabled,
-    // required this.result, required this.speechToText,
+    required this.onSccussMove,
   }) : super(key: key);
 
   @override
@@ -27,7 +17,6 @@ class CustomModalBottom extends StatefulWidget {
 
 class _CustomModalBottomState extends State<CustomModalBottom> {
   SpeechToText _speechToText = SpeechToText();
-  bool isListening = false;
   bool _speechEnabled = false;
   String _lastWords = '';
   String statusListening = '';
@@ -42,13 +31,10 @@ class _CustomModalBottomState extends State<CustomModalBottom> {
   void _initSpeech() async {
     _speechEnabled = await _speechToText.initialize(
       onStatus: (status) {
-        // print(status);
-        if (status == "done") {
-          _stopListening();
-          if (_lastWords.isNotEmpty) {
-            _navigateToSearchScreen(_lastWords);
-          }
-        }
+        setState(() {
+          statusListening = status;
+          print(status);
+        });
       },
     );
     setState(() {});
@@ -57,38 +43,37 @@ class _CustomModalBottomState extends State<CustomModalBottom> {
   /// Each time to start a speech recognition session
   void _startListening() async {
     await _speechToText.listen(onResult: _onSpeechResult);
-    setState(() {
-      isListening = true;
-    });
+    setState(() {});
   }
 
   void _stopListening() async {
     await _speechToText.stop();
-    setState(() {
-      isListening = false;
-    });
+    setState(() {});
   }
 
   /// This is the callback that the SpeechToText plugin calls when
   /// the platform returns recognized words.
-  void _onSpeechResult(SpeechRecognitionResult result) {
-    setState(() {
-      _lastWords = result.recognizedWords;
-    });
-  }
-
-  void _navigateToSearchScreen(String query) {
-    Navigator.of(context).pushNamed(
-      Search.routeName,
-      arguments: query,
-    );
+  void _onSpeechResult(SpeechRecognitionResult result) async {
+    _lastWords = result.recognizedWords;
+    if (_speechToText.isNotListening) {
+      _stopListening();
+      widget.onSccussMove();
+      if (_lastWords.isNotEmpty) {
+        Navigator.pushNamed(
+          context,
+          Search.routeName,
+          arguments: _lastWords,
+        );
+      }
+    }
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context).size;
-    print(_lastWords);
-    return Container(
+    print(_speechToText.isListening);
+    return SizedBox(
       height: mediaQuery.height * 0.3,
       child: Column(
         children: [
@@ -106,10 +91,8 @@ class _CustomModalBottomState extends State<CustomModalBottom> {
               repeatPauseDuration: const Duration(milliseconds: 100),
               glowColor: Colors.blue,
               repeat: true,
-              child: ElevatedButton(
-                onPressed: _speechToText.isNotListening
-                    ? _startListening
-                    : _stopListening,
+              child: FloatingActionButton(
+                onPressed: () => _startListening(),
                 child: Icon(
                     _speechToText.isListening ? Icons.mic : Icons.mic_none),
               ))

@@ -23,16 +23,6 @@ class _HeaderState extends State<Header> {
     _textEditingController.text = widget.searchValue ?? '';
   }
 
-  void onPressOpenMic() {
-    showModalBottomSheet(
-        context: context,
-        builder: (context) {
-          final mediaQuery = MediaQuery.of(context).size;
-          return CustomModalBottom();
-        });
-    setState(() {});
-  }
-
   void _navigateToSearchScreen(String query) {
     Navigator.pushNamed(
       context,
@@ -102,13 +92,8 @@ class _HeaderState extends State<Header> {
                   context: context,
                   builder: (context) {
                     return CustomModalBottom(
-                        // startListening: _startListening,
-                        // stopListening: _stopListening,
-                        // isListening: isListening,
-                        // speechEnabled: _speechEnabled,
-                        // result: _lastWords,
-                        // speechToText: _speechToText,
-                        );
+                      onSccussMove: () => Navigator.pop(context),
+                    );
                   });
             },
             child: const Icon(

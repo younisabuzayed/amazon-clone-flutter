@@ -9,7 +9,7 @@ const userRouter = require('./routes/user');
 
 const api = '/api/v1'
 const PORT = 3000;
-const DB = "mongodb+srv://admin:admin@cluster0.7nzog.mongodb.net/amazone-clone?retryWrites=true&w=majority"
+const DB = ""
 const app = express();
 
 // app.use(cors());

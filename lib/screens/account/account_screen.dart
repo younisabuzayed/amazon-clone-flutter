@@ -2,6 +2,7 @@
 
 import 'package:amazon_clone/screens/account/widgets/orders.dart';
 import 'package:amazon_clone/screens/account/widgets/top_buttons.dart';
+import 'package:amazon_clone/screens/notifications/notifications_screen.dart';
 
 import '../../constants/global_variables.dart';
 import './widgets/below_app_bar.dart';
@@ -28,11 +29,13 @@ class Account extends StatelessWidget
             children: [
               Container(
                 alignment: Alignment.topLeft,
-                child: Image.asset(
-                  'assets/images/amazon_in.png',
-                  height: 45,
-                  width: 120,
-                  color: Colors.black,
+                child: const Text(
+                  'Shop Name',
+                  style: TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black,
+                  ),
                 ),
               ),
               Container(
@@ -40,12 +43,19 @@ class Account extends StatelessWidget
                   horizontal: 15
                 ),
                 child: Row(
-                  children: const [
+                  children: [
                     Padding(
-                      padding: EdgeInsets.symmetric(
+                      padding: const EdgeInsets.symmetric(
                         horizontal: 15
                       ),
-                      child: Icon(Icons.notifications_outlined),
+                      child: IconButton(
+                        icon: const Icon(
+                          Icons.notifications_outlined
+                        ), 
+                        onPressed: () { 
+                          Navigator.pushNamed(context, Notifications.routeName);
+                         },
+                      ),
                     ),
                     Icon(Icons.search_outlined),
                   ],

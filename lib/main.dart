@@ -6,6 +6,7 @@ import 'package:amazon_clone/widgets/bottom_bar.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import '../constants/global_variables.dart';
@@ -14,15 +15,18 @@ import 'package:flutter/material.dart';
 import 'firebase_options.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  // If you're going to use other Firebase services in the background, such as Firestore,
-  // make sure you call `initializeApp` before using other Firebase services.
   await Firebase.initializeApp();
 
   print("Handling a background message: ${message.messageId}");
 }
 
 void main() async {
+
   WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitDown,
+    DeviceOrientation.portraitUp,
+  ]);
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -42,7 +46,6 @@ void main() async {
       provisional: false,
       sound: true,
     );
-  // await FirebaseMessaging.instance.setAutoInitEnabled(true);
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   FirebaseAnalytics analytics = FirebaseAnalytics.instance;
@@ -57,9 +60,15 @@ void main() async {
     }
   });
   // final token = await FirebaseMessaging.instance.getToken();
-  runApp(MultiProvider(providers: [
-    ChangeNotifierProvider(create: (context) => UserProvider()),
-  ], child: const MyApp()));
+
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => UserProvider()),
+      ], 
+      child: const MyApp()
+    )
+  );
 }
 
 class MyApp extends StatefulWidget {

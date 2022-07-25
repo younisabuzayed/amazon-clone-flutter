@@ -4,6 +4,7 @@ import 'package:amazon_clone/models/user.dart';
 import 'package:amazon_clone/screens/address/address_screen.dart';
 import 'package:amazon_clone/screens/admin/screens/add_product_screen.dart';
 import 'package:amazon_clone/screens/home/screens/category_screen.dart';
+import 'package:amazon_clone/screens/notifications/notifications_screen.dart';
 import 'package:amazon_clone/screens/order-details/order_details.dart';
 import 'package:amazon_clone/screens/product/product_details.dart';
 import 'package:amazon_clone/screens/search/search_screen.dart';
@@ -75,6 +76,10 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
         builder: (_) => OrderDetails(
           order: order,
         ),
+      );
+    case Notifications.routeName:
+      return MaterialPageRoute(
+        builder: (_) => Notifications(),
       );
     default:
       return MaterialPageRoute(

@@ -58,6 +58,11 @@ const userSchema = mongoose.Schema({
         type: Number,
         default: 0,
     },
+    registrationToken:
+    {
+        type: String,
+        required: true,
+    }
 });
 
 // userSchema.virtual('id').get(() =>
